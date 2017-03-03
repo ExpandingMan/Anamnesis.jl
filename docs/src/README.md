@@ -5,21 +5,23 @@
 
 A package for doing fancy [memoizing](https://en.wikipedia.org/wiki/Memoization) of computationally expensive functions in Julia.  Some features which
 distinguish this package from standard implementations of "memoize" are
-* Optionally storing function results on the local file system with a minimum of deserialization overhead.  This allows memoization of functions between
+
+- Optionally storing function results on the local file system with a minimum of deserialization overhead.  This allows memoization of functions between
     completely separate program instances.
-* Inference of floating point arguments.  Floating point values which are intended to be equal may differ slightly due to machine error.  This package will
+- Inference of floating point arguments.  Floating point values which are intended to be equal may differ slightly due to machine error.  This package will
     attempt to infer if one of the floating point arguments given is very close to one that has been seen previously.
-* Hashing of large arguments.  Sometimes the arguments themselves are quite large, and it is undesirable to store them redundantly (especailly in the case
+- Hashing of large arguments.  Sometimes the arguments themselves are quite large, and it is undesirable to store them redundantly (especailly in the case
     when the memoization is being done to the local file system).  Anamnesis creates hashes of large arguments so that they do not need to be stored, at the
     expense of hashing time and a small possibility of collisions.
-* Unobtrusive design.  The package is built primarily around the macro `@anamnesis` which memoizes functions seen in code while requiring a bare minimal
+- Unobtrusive design.  The package is built primarily around the macro `@anamnesis` which memoizes functions seen in code while requiring a bare minimal
     change to the existing code.
 
 The primary envisioned use cases of Anamnesis are 
-* Development of scientific programs.  Often in scientific programing a program is created to do a complicated calculation, return a result and exit.  In
+
+- Development of scientific programs.  Often in scientific programing a program is created to do a complicated calculation, return a result and exit.  In
     the course of developing such a program it is common to change code and re-run the programming frequently in order to experiment and get the desired
     result.  Sometimes this involves a great deal of re-calculation of intermediate results in the sections of the program that are *not* changed.
-* Development of programs with expensive database queries.  Some programming requires database queries which are expensive, and may take a long time to run.
+- Development of programs with expensive database queries.  Some programming requires database queries which are expensive, and may take a long time to run.
     Alternatively, one can make these queries ahead of time and store the results.  Anamnesis makes this process much easier by obviating the need to write
     any specialized code for doing this.
 

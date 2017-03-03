@@ -121,7 +121,7 @@ Note that all scribe objects identify functions purely by their names.
 One can also do `VolatileScribe(s, dir)` where `s` is a `VolatileScribe`.  When this is done, the scribe will determine if the directory `dir` exists.  If it does, it will load all  function evaluations from there and merge those with any that it has already evaluated in the course of the program, which will also be stored to files in `dir`.  If `dir` does not exist, it will be created along with any evaluations that the scribe holds.
 
 
-<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/3658194376e1ffeab654d249cd09e236a31c9e92/src/scribe.jl#L66-L90' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/5cfaec9c6c680bb9e320eac20acae76f67fc95d3/src/scribe.jl#L66-L90' class='documenter-source'>source</a><br>
 
 <a id='Anamnesis.VolatileScribe' href='#Anamnesis.VolatileScribe'>#</a>
 **`Anamnesis.VolatileScribe`** &mdash; *Type*.
@@ -137,7 +137,7 @@ This is essentially a wrapper for the function `f` (which is given the `Symbol` 
 Note that all scribe objects identify functions purely by their names.
 
 
-<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/3658194376e1ffeab654d249cd09e236a31c9e92/src/scribe.jl#L44-L54' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/5cfaec9c6c680bb9e320eac20acae76f67fc95d3/src/scribe.jl#L44-L54' class='documenter-source'>source</a><br>
 
 <a id='Anamnesis.execute!-Tuple{Anamnesis.AbstractScribe,Vararg{Any,N}}' href='#Anamnesis.execute!-Tuple{Anamnesis.AbstractScribe,Vararg{Any,N}}'>#</a>
 **`Anamnesis.execute!`** &mdash; *Method*.
@@ -151,7 +151,7 @@ execute!(scr, args...)
 This is an alias for calling the scribe object.  It is useful to have this form for writing some of the macro code.
 
 
-<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/3658194376e1ffeab654d249cd09e236a31c9e92/src/scribe.jl#L217-L222' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/5cfaec9c6c680bb9e320eac20acae76f67fc95d3/src/scribe.jl#L217-L222' class='documenter-source'>source</a><br>
 
 <a id='Anamnesis.forget!-Tuple{Anamnesis.AbstractScribe,Vararg{Any,N}}' href='#Anamnesis.forget!-Tuple{Anamnesis.AbstractScribe,Vararg{Any,N}}'>#</a>
 **`Anamnesis.forget!`** &mdash; *Method*.
@@ -167,7 +167,7 @@ Delete the records of a particular function call saved by the scribe object `scr
 Note that this will *not* throw an error if the entry for the arguments provided do not exist.
 
 
-<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/3658194376e1ffeab654d249cd09e236a31c9e92/src/scribe.jl#L227-L235' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/5cfaec9c6c680bb9e320eac20acae76f67fc95d3/src/scribe.jl#L227-L235' class='documenter-source'>source</a><br>
 
 <a id='Anamnesis.purge-Tuple{String}' href='#Anamnesis.purge-Tuple{String}'>#</a>
 **`Anamnesis.purge`** &mdash; *Method*.
@@ -182,7 +182,7 @@ purge(dir)
 Delete a directory and its contents.  If an `AbstractScribe` argument is provided, the directory will be deleted, and a non-volatile scribe object will be returned.  
 
 
-<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/3658194376e1ffeab654d249cd09e236a31c9e92/src/scribe.jl#L253-L259' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/5cfaec9c6c680bb9e320eac20acae76f67fc95d3/src/scribe.jl#L253-L259' class='documenter-source'>source</a><br>
 
 <a id='Anamnesis.refresh!-Tuple{Anamnesis.AbstractScribe,Vararg{Any,N}}' href='#Anamnesis.refresh!-Tuple{Anamnesis.AbstractScribe,Vararg{Any,N}}'>#</a>
 **`Anamnesis.refresh!`** &mdash; *Method*.
@@ -196,7 +196,7 @@ refresh!(scr, args...)
 Re-calculate the value of the function associated with the scribe object `scr`, storing the new value in the ways it would normally be stored after a function call with the type of scribe object given.
 
 
-<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/3658194376e1ffeab654d249cd09e236a31c9e92/src/scribe.jl#L268-L274' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/5cfaec9c6c680bb9e320eac20acae76f67fc95d3/src/scribe.jl#L268-L274' class='documenter-source'>source</a><br>
 
 <a id='Anamnesis.scribe-Tuple{Function,Symbol}' href='#Anamnesis.scribe-Tuple{Function,Symbol}'>#</a>
 **`Anamnesis.scribe`** &mdash; *Method*.
@@ -215,7 +215,7 @@ Note that these functions do not store the functions in the Anamnesis module.
 Under most circumstances it is recomended that users use the `@scribe` macro instead.
 
 
-<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/3658194376e1ffeab654d249cd09e236a31c9e92/src/scribe.jl#L316-L326' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/5cfaec9c6c680bb9e320eac20acae76f67fc95d3/src/scribe.jl#L316-L326' class='documenter-source'>source</a><br>
 
 <a id='Anamnesis.@scribe-Tuple{Any}' href='#Anamnesis.@scribe-Tuple{Any}'>#</a>
 **`Anamnesis.@scribe`** &mdash; *Macro*.
@@ -234,5 +234,5 @@ Additionally, the "scribe" object will be stored in the Anamnesis module in a di
 Note that functions are identified entirely by name, so this macro will confuse distinct functions which are given the same name, regardless of scope.
 
 
-<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/3658194376e1ffeab654d249cd09e236a31c9e92/src/scribe.jl#L332-L347' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/5cfaec9c6c680bb9e320eac20acae76f67fc95d3/src/scribe.jl#L332-L347' class='documenter-source'>source</a><br>
 
