@@ -4,11 +4,10 @@ using DatasToolbox
 using DataFrames
 
 # TODO implement kwargs
-# TODO have separate metadata for each function so that multiple functions can share a dir
 
 
 
-const METADATE_FILENAME = "metadata.jbin"
+const METADATA_FILENAME = "metadata.jbin"
 const FILENAME_RANDSTRING_LENGTH = 12
 ARGHASH_FLOAT_DIGITS = 12
 

@@ -96,7 +96,7 @@ type NonVolatileScribe <: AbstractScribe
 
     function NonVolatileScribe(f::Function, name::Symbol, dir::String)
         !isdir(dir) && mkdir(dir)
-        new(f, loadMetadata(dir), name, dir)
+        new(f, loadMetadata(dir, name), name, dir)
     end
 end
 export NonVolatileScribe
@@ -114,7 +114,7 @@ end
 function NonVolatileScribe(s::VolatileScribe, dir::String)
     o = NonVolatileScribe(s.f, s.name, dir)
     o.vals = copy(s.vals)
-    meta = loadMetadata(dir)  # and load and merge the metadata
+    meta = loadMetadata(o)
     mergeValueDicts!(o.vals, meta)
     # now we need to make files for everything that's missing
     for (k, v) ∈ o.vals
@@ -148,6 +148,32 @@ function NonVolatileScribe(s::NonVolatileScribe, dir::String)
     end
 end
 
+
+"""
+    metadataFileName(scr)
+
+Gets the full metadata file name (with the full path) for the `NonVolatileScribe` `scr`.
+"""
+metadataFileName(s::NonVolatileScribe) = metadataFileName(s.dir, s.name)
+
+
+"""
+    saveMetadata(scr)
+
+Save metadata for the `NonVolatileScribe` `scr`.
+"""
+function saveMetadata(s::NonVolatileScribe)
+    meta = metadata(s)
+    saveMetadata(s.dir, s.name, meta)
+end
+
+
+"""
+    loadMetadata(scr)
+
+Load the metadata for the `NonVolatileScribe` `scr`.
+"""
+loadMetadata(s::NonVolatileScribe) = loadMetadata(s.dir, s.name)
 
 
 function _generate_filename_raw{T}(s::AbstractScribe, ::Type{T})
@@ -190,8 +216,7 @@ function _save_eval!(s::NonVolatileScribe, dict::Dict, key_args, y)
     dict[:val] = y
     dict[:file] = filename
     s.vals[key_args] = dict
-    meta = metadata(s)  # TODO clean this shit up! shouldn't run all the time
-    saveMetadata(s.dir, meta)  # for now we save metadata every time.  ugh
+    saveMetadata(s)  # TODO clean this shit up!  shouldn't run all the time
     _save_eval(joinpath(s.dir, filename), y)
 end
 

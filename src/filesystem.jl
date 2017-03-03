@@ -4,8 +4,8 @@
 The metadata dictionary has keys which are Vector{Any}s with the function name
 followed by the hashed arguments.
 =================================================================================#
-metadataFileName(dir::String) = joinpath(dir, METADATE_FILENAME)
-loadMetadata_raw(dir::String) = deserialize(metadataFileName(dir))
+metadataFileName(dir::String, name::Symbol) = joinpath(dir,string(name,"_",METADATA_FILENAME))
+loadMetadata_raw(dir::String, name::Symbol) = deserialize(metadataFileName(dir, name))
 
 
 """
@@ -15,23 +15,23 @@ Load a metadata dictionary (the kind used by scribes) found in the directory `di
 If a file doesn't exist in the directory with the standard metadat filename 
 (`Anamnesis.METADATE_FILENAME`), an empty `Dict` will be returned instead.
 """
-function loadMetadata(dir::String)
-    filename = metadataFileName(dir)
+function loadMetadata(dir::String, name::Symbol)
+    filename = metadataFileName(dir, name)
     if isfile(filename)
-        return loadMetadata_raw(dir)
+        return loadMetadata_raw(dir, name)
     end
     Dict()  # if file doesn't exist, return empty Dict
 end
 
 
 """
-    saveMetadata(dir, meta)
+    saveMetadata(dir, name, meta)
 
 Saves the `Dict` `meta` to the directory `dir` in a file with the standard metadata file name
-(`Anamnesis.METADATE_FILENAME`).
+(`Anamnesis.METADATA_FILENAME`) for the function named `name`.
 """
-function saveMetadata(dir::String, meta::Dict)
-    serialize(joinpath(dir, METADATE_FILENAME), meta)
+function saveMetadata(dir::String, name::Symbol, meta::Dict)
+    serialize(metadataFileName(dir, name), meta)
 end
 
 

@@ -3,3 +3,7 @@
 *.jl.mem
 *.swp
 deps/deps.jl
+
+# ignore serialized files
+*.jbin
+*.feather
