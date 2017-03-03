@@ -11,10 +11,20 @@
 
 
 
-A package for doing fancy [memoizing](https://en.wikipedia.org/wiki/Memoization) of computationally expensive functions in Julia.  Some features which distinguish this package from standard implementations of "memoize" are     * Optionally storing function results on the local file system with a minimum of deserialization overhead.  This allows memoization of functions between         completely separate program instances.     * Inference of floating point arguments.  Floating point values which are intended to be equal may differ slightly due to machine error.  This package will         attempt to infer if one of the floating point arguments given is very close to one that has been seen previously.     * Hashing of large arguments.  Sometimes the arguments themselves are quite large, and it is undesirable to store them redundantly (especailly in the case         when the memoization is being done to the local file system).  Anamnesis creates hashes of large arguments so that they do not need to be stored, at the         expense of hashing time and a small possibility of collisions.     * Unobtrusive design.  The package is built primarily around the macro `@anamnesis` which memoizes functions seen in code while requiring a bare minimal         change to the existing code.
+A package for doing fancy [memoizing](https://en.wikipedia.org/wiki/Memoization) of computationally expensive functions in Julia.  Some features which distinguish this package from standard implementations of "memoize" are
 
 
-The primary envisioned use cases of Anamnesis are      * Development of scientific programs.  Often in scientific programing a program is created to do a complicated calculation, return a result and exit.  In         the course of developing such a program it is common to change code and re-run the programming frequently in order to experiment and get the desired         result.  Sometimes this involves a great deal of re-calculation of intermediate results in the sections of the program that are *not* changed.     * Development of programs with expensive database queries.  Some programming requires database queries which are expensive, and may take a long time to run.         Alternatively, one can make these queries ahead of time and store the results.  Anamnesis makes this process much easier by obviating the need to write         any specialized code for doing this.
+  * Optionally storing function results on the local file system with a minimum of deserialization overhead.  This allows memoization of functions between   completely separate program instances.
+  * Inference of floating point arguments.  Floating point values which are intended to be equal may differ slightly due to machine error.  This package will   attempt to infer if one of the floating point arguments given is very close to one that has been seen previously.
+  * Hashing of large arguments.  Sometimes the arguments themselves are quite large, and it is undesirable to store them redundantly (especailly in the case   when the memoization is being done to the local file system).  Anamnesis creates hashes of large arguments so that they do not need to be stored, at the   expense of hashing time and a small possibility of collisions.
+  * Unobtrusive design.  The package is built primarily around the macro `@anamnesis` which memoizes functions seen in code while requiring a bare minimal   change to the existing code.
+
+
+The primary envisioned use cases of Anamnesis are 
+
+
+  * Development of scientific programs.  Often in scientific programing a program is created to do a complicated calculation, return a result and exit.  In   the course of developing such a program it is common to change code and re-run the programming frequently in order to experiment and get the desired   result.  Sometimes this involves a great deal of re-calculation of intermediate results in the sections of the program that are *not* changed.
+  * Development of programs with expensive database queries.  Some programming requires database queries which are expensive, and may take a long time to run.   Alternatively, one can make these queries ahead of time and store the results.  Anamnesis makes this process much easier by obviating the need to write   any specialized code for doing this.
 
 
 <a id='The-@anamnesis-Macro-1'></a>
@@ -111,7 +121,7 @@ Note that all scribe objects identify functions purely by their names.
 One can also do `VolatileScribe(s, dir)` where `s` is a `VolatileScribe`.  When this is done, the scribe will determine if the directory `dir` exists.  If it does, it will load all  function evaluations from there and merge those with any that it has already evaluated in the course of the program, which will also be stored to files in `dir`.  If `dir` does not exist, it will be created along with any evaluations that the scribe holds.
 
 
-<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/4759322c189ad35a934d761e721eba8660621064/src/scribe.jl#L66-L90' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/3658194376e1ffeab654d249cd09e236a31c9e92/src/scribe.jl#L66-L90' class='documenter-source'>source</a><br>
 
 <a id='Anamnesis.VolatileScribe' href='#Anamnesis.VolatileScribe'>#</a>
 **`Anamnesis.VolatileScribe`** &mdash; *Type*.
@@ -127,7 +137,7 @@ This is essentially a wrapper for the function `f` (which is given the `Symbol` 
 Note that all scribe objects identify functions purely by their names.
 
 
-<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/4759322c189ad35a934d761e721eba8660621064/src/scribe.jl#L44-L54' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/3658194376e1ffeab654d249cd09e236a31c9e92/src/scribe.jl#L44-L54' class='documenter-source'>source</a><br>
 
 <a id='Anamnesis.execute!-Tuple{Anamnesis.AbstractScribe,Vararg{Any,N}}' href='#Anamnesis.execute!-Tuple{Anamnesis.AbstractScribe,Vararg{Any,N}}'>#</a>
 **`Anamnesis.execute!`** &mdash; *Method*.
@@ -141,7 +151,7 @@ execute!(scr, args...)
 This is an alias for calling the scribe object.  It is useful to have this form for writing some of the macro code.
 
 
-<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/4759322c189ad35a934d761e721eba8660621064/src/scribe.jl#L217-L222' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/3658194376e1ffeab654d249cd09e236a31c9e92/src/scribe.jl#L217-L222' class='documenter-source'>source</a><br>
 
 <a id='Anamnesis.forget!-Tuple{Anamnesis.AbstractScribe,Vararg{Any,N}}' href='#Anamnesis.forget!-Tuple{Anamnesis.AbstractScribe,Vararg{Any,N}}'>#</a>
 **`Anamnesis.forget!`** &mdash; *Method*.
@@ -157,7 +167,7 @@ Delete the records of a particular function call saved by the scribe object `scr
 Note that this will *not* throw an error if the entry for the arguments provided do not exist.
 
 
-<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/4759322c189ad35a934d761e721eba8660621064/src/scribe.jl#L227-L235' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/3658194376e1ffeab654d249cd09e236a31c9e92/src/scribe.jl#L227-L235' class='documenter-source'>source</a><br>
 
 <a id='Anamnesis.purge-Tuple{String}' href='#Anamnesis.purge-Tuple{String}'>#</a>
 **`Anamnesis.purge`** &mdash; *Method*.
@@ -172,7 +182,7 @@ purge(dir)
 Delete a directory and its contents.  If an `AbstractScribe` argument is provided, the directory will be deleted, and a non-volatile scribe object will be returned.  
 
 
-<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/4759322c189ad35a934d761e721eba8660621064/src/scribe.jl#L253-L259' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/3658194376e1ffeab654d249cd09e236a31c9e92/src/scribe.jl#L253-L259' class='documenter-source'>source</a><br>
 
 <a id='Anamnesis.refresh!-Tuple{Anamnesis.AbstractScribe,Vararg{Any,N}}' href='#Anamnesis.refresh!-Tuple{Anamnesis.AbstractScribe,Vararg{Any,N}}'>#</a>
 **`Anamnesis.refresh!`** &mdash; *Method*.
@@ -186,7 +196,7 @@ refresh!(scr, args...)
 Re-calculate the value of the function associated with the scribe object `scr`, storing the new value in the ways it would normally be stored after a function call with the type of scribe object given.
 
 
-<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/4759322c189ad35a934d761e721eba8660621064/src/scribe.jl#L268-L274' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/3658194376e1ffeab654d249cd09e236a31c9e92/src/scribe.jl#L268-L274' class='documenter-source'>source</a><br>
 
 <a id='Anamnesis.scribe-Tuple{Function,Symbol}' href='#Anamnesis.scribe-Tuple{Function,Symbol}'>#</a>
 **`Anamnesis.scribe`** &mdash; *Method*.
@@ -205,7 +215,7 @@ Note that these functions do not store the functions in the Anamnesis module.
 Under most circumstances it is recomended that users use the `@scribe` macro instead.
 
 
-<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/4759322c189ad35a934d761e721eba8660621064/src/scribe.jl#L316-L326' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/3658194376e1ffeab654d249cd09e236a31c9e92/src/scribe.jl#L316-L326' class='documenter-source'>source</a><br>
 
 <a id='Anamnesis.@scribe-Tuple{Any}' href='#Anamnesis.@scribe-Tuple{Any}'>#</a>
 **`Anamnesis.@scribe`** &mdash; *Macro*.
@@ -224,5 +234,5 @@ Additionally, the "scribe" object will be stored in the Anamnesis module in a di
 Note that functions are identified entirely by name, so this macro will confuse distinct functions which are given the same name, regardless of scope.
 
 
-<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/4759322c189ad35a934d761e721eba8660621064/src/scribe.jl#L332-L347' class='documenter-source'>source</a><br>
+<a target='_blank' href='https://github.com/ExpandingMan/Anamnesis.jl/tree/3658194376e1ffeab654d249cd09e236a31c9e92/src/scribe.jl#L332-L347' class='documenter-source'>source</a><br>
 
