@@ -19,11 +19,11 @@ distinguish this package from standard implementations of "memoize" are
 The primary envisioned use cases of Anamnesis are 
 
 - Development of scientific programs.  Often in scientific programing a program is created to do a complicated calculation, return a result and exit.  In
-    the course of developing such a program it is common to change code and re-run the programming frequently in order to experiment and get the desired
-    result.  Sometimes this involves a great deal of re-calculation of intermediate results in the sections of the program that are *not* changed.
+    the course of developing such a program it is common to change code and re-run the programming frequently in order to experiment and get the desired result.
+    Sometimes this involves a great deal of re-calculation of intermediate results in the sections of the program that are *not* changed.
 - Development of programs with expensive database queries.  Some programming requires database queries which are expensive, and may take a long time to run.
-    Alternatively, one can make these queries ahead of time and store the results.  Anamnesis makes this process much easier by obviating the need to write
-    any specialized code for doing this.
+    Alternatively, one can make these queries ahead of time and store the results.  Anamnesis makes this process much easier by obviating the need to write any
+    specialized code for doing this.
 
 
 ## The `@anamnesis` Macro
