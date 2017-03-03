@@ -1,7 +1,6 @@
 # Anamnesis
 
-[![Build Status](https://travis-ci.org/ExpandingMan/Anamnesis.jl.svg?branch=master)](https://travis-ci.org/ExpandingMan/Anamnesis.jl)
+A package for "memoizing" functions with some fancy features like argument matching and the ability to automatically save to the local file system.
 
-[![Coverage Status](https://coveralls.io/repos/ExpandingMan/Anamnesis.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/ExpandingMan/Anamnesis.jl?branch=master)
+**Documentation coming soon!**
 
-[![codecov.io](http://codecov.io/github/ExpandingMan/Anamnesis.jl/coverage.svg?branch=master)](http://codecov.io/github/ExpandingMan/Anamnesis.jl?branch=master)
