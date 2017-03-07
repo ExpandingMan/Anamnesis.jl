@@ -194,13 +194,13 @@ end
 
 
 # this is is the implementation of "memoize"
-function (s::VolatileScribe)(args...)
-    key_args = hashArgs(args)
+function (s::VolatileScribe)(args...; kwargs...)
+    key_args = hashArgs(args, kwargs)
     dict = get(s.vals, key_args, Dict())
     if (:val ∈ keys(dict))
         y = dict[:val]
     else
-        y = s.f(args...)
+        y = s.f(args...; kwargs...)
         dict[:val] = y
         s.vals[key_args] = dict
     end
@@ -222,8 +222,8 @@ end
 
 
 # this is memoize with storing on disk
-function (s::NonVolatileScribe)(args...)
-    key_args = hashArgs(args)
+function (s::NonVolatileScribe)(args...; kwargs...)
+    key_args = hashArgs(args, kwargs)
     dict = get(s.vals, key_args, Dict())
     if (:val ∈ keys(dict))
         y = dict[:val]
@@ -232,7 +232,7 @@ function (s::NonVolatileScribe)(args...)
         dict[:val] = y
         s.vals[key_args] = dict
     else
-        y = s.f(args...)
+        y = s.f(args...; kwargs...)
         _save_eval!(s, dict, key_args, y)
     end
     y
@@ -245,7 +245,7 @@ end
 This is an alias for calling the scribe object.  It is useful to have this form for writing
 some of the macro code.
 """
-execute!(s::AbstractScribe, args...) = s(args...)
+execute!(s::AbstractScribe, args...; kwargs...) = s(args...; kwargs...)
 export execute!
 
 
@@ -320,13 +320,19 @@ collisions caused by rounding floats are intentional.
 arghash(a) = hash(a)
 arghash(a::Number) = a
 arghash(a::AbstractFloat) = round(a, ARGHASH_FLOAT_DIGITS)
+arghash(a::Symbol) = a
+# tuples resulting from keyword arguments
+arghash(a::Tuple) = tuple([arghash(a_) for a_ ∈ a]...)
 
 
 """
-    hashArgs(args)
+    hashArgs(args[, kwargs])
 
 Create a vector holding the hash values for the supplied arguments (either a tuple or vector).
 See the documentation for `arghash` for information on how the arguments are hashed.
+
+If keywords arguments are provided (as an array of tuples), they will simply be concatenated
+onto the keys generated for the other arguments.
 """
 function hashArgs(args::Union{Tuple,Vector})
     key_args = Vector{Any}(length(args))
@@ -335,6 +341,8 @@ function hashArgs(args::Union{Tuple,Vector})
     end
     key_args
 end
+
+hashArgs(args::Union{Tuple,Vector}, kwargs::Vector) = vcat(hashArgs(args), hashArgs(kwargs))
 
 
 # right now this is just an alias for FunctionScribe, will add to later

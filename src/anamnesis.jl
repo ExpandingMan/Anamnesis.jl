@@ -1,8 +1,11 @@
 
 function _anamnesis_getsymbols_call(expr::Expr)
     f = expr.args[1]
-    args = Expr(:tuple, expr.args[2:end]...)
-    nothing, f, args
+    args_ = [a for a ∈ expr.args[2:end] if !isa(a, Expr)]
+    kwargs_ = [tuple(a.args...) for a ∈ expr.args[2:end] if isa(a, Expr) && a.head == :kw]
+    args = Expr(:tuple, args_...)
+    kwargs = Expr(:tuple, kwargs_...)
+    nothing, f, args, kwargs
 end
 
 function _anamnesis_getsymbols_assignment(expr::Expr)
@@ -10,8 +13,8 @@ function _anamnesis_getsymbols_assignment(expr::Expr)
     if expr.args[2].head ≠ :call
         throw(ArgumentError("@anamnesis argument must contain a function call."))
     end
-    _val, f, args = _anamnesis_getsymbols_call(expr.args[2])
-    val, f, args
+    _val, f, args, kwargs = _anamnesis_getsymbols_call(expr.args[2])
+    val, f, args, kwargs
 end
 
 function _anamnesis_getsymbols_(expr::Expr)
@@ -38,7 +41,7 @@ end
 
 
 macro anamnesis(refresh::Bool, dir, expr)
-    val, f, args = _anamnesis_getsymbols(expr)
+    val, f, args, kwargs = _anamnesis_getsymbols(expr)
     fname = Expr(:quote, f)
     
     if f ∉ keys(ScribeBox)
@@ -60,10 +63,14 @@ macro anamnesis(refresh::Bool, dir, expr)
 
     callsymb = refresh ? Symbol(:refresh!) : Symbol(:execute!)
 
-    if val == nothing
-        callexpr = :(Anamnesis.$callsymb(Anamnesis.ScribeBox[$fname], $args...))
+    if args == :(())
+        callexpr = :(Anamnesis.$callsymb(Anamnesis.ScribeBox[$fname]; $kwargs...))
     else
-        callexpr = :($val = Anamnesis.$callsymb(Anamnesis.ScribeBox[$fname], $args...))
+        callexpr = :(Anamnesis.$callsymb(Anamnesis.ScribeBox[$fname], $args...; $kwargs...))
+    end
+
+    if val ≠ nothing
+        callexpr = :($val = $callexpr)
     end
 
     esc(quote

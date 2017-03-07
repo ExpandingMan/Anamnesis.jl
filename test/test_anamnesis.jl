@@ -2,9 +2,9 @@ using Anamnesis
 
 const dir = "anamtest"
 
-function f(a, ϕ)
+function f(a, ϕ; b=0.0)
     println("f being called")
-    a*e^(im*ϕ)
+    a*e^(im*ϕ) + b*e^(-im*ϕ)
 end
 
 
@@ -15,7 +15,6 @@ end
 
 
 @anamnesis y = f(1.0, π)
-@anamnesis z = g(1.0, Inf)
 
 
 

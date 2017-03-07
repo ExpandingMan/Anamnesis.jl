@@ -3,7 +3,8 @@ module Anamnesis
 using DatasToolbox
 using DataFrames
 
-# TODO implement kwargs
+# TODO write @anamnesis for blocks
+# TODO implement size limits for hashing
 
 
 
