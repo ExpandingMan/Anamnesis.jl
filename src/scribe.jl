@@ -351,15 +351,22 @@ hashArgs(args::Union{Tuple,Vector}, kwargs::Vector) = vcat(hashArgs(args), hashA
     scribe(f, name, dir)
 
 Create a scribe object for function `f` of name `name`.  This will be a `NonVolatileScribe` 
-if a directory is supplied or a `VolatileScribe` otherwise.
+if a directory is supplied or a `VolatileScribe` otherwise.  (If an empty string is supplied
+for `dir`, this will return a `NonVolatileScribe`.)
 
 Note that these functions do not store the functions in the Anamnesis module.
 
 Under most circumstances it is recomended that users use the `@scribe` macro instead.
 """
 scribe(f::Function, name::Symbol) = VolatileScribe(f, name)
-scribe(f::Function, name::Symbol, dir::String) = NonVolatileScribe(f, name, dir)
+function scribe(f::Function, name::Symbol, dir::String)
+    if length(dir) > 0
+        return NonVolatileScribe(f, name, dir)
+    end
+    VolatileScribe(f, name)
+end
 export scribe
+
 
 
 """
@@ -409,5 +416,4 @@ macro scribe(dir, f)
     esc(o)
 end
 export @scribe
-
 

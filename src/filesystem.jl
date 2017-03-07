@@ -58,7 +58,7 @@ Loads a file using the appropriate deserialization method for the file extension
 """
 function loadfile(filename::String)
     ext = convert(String, split(filename, '.')[end])
-    if ext == ".feather"
+    if ext == "feather"
         return featherRead(filename)
     end
     deserialize(filename)

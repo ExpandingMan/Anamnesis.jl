@@ -1,11 +1,13 @@
+__precompile__(true)
+
 module Anamnesis
 # TODO make DataFrames dependency conditional and remove DatasToolbox dependency
 using DatasToolbox
 using DataFrames
 
-# TODO write @anamnesis for blocks
+# TODO write forget macros
 # TODO implement size limits for hashing
-
+# TODO handle different orderings of keyword arguments
 
 
 const METADATA_FILENAME = "metadata.jbin"
