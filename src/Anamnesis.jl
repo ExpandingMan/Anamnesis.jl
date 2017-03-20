@@ -1,9 +1,7 @@
 __precompile__(true)
 
 module Anamnesis
-# TODO make DataFrames dependency conditional and remove DatasToolbox dependency
-using DatasToolbox
-using DataFrames
+using DataUtils
 
 # TODO write forget macros
 # TODO implement size limits for hashing

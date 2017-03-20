@@ -179,7 +179,7 @@ loadMetadata(s::NonVolatileScribe) = loadMetadata(s.dir, s.name)
 function _generate_filename_raw{T}(s::AbstractScribe, ::Type{T})
     filename = string(s.name, "_", randstring(FILENAME_RANDSTRING_LENGTH), ".jbin")
 end
-function _generate_filename_raw(s::AbstractScribe, ::Type{DataFrame})
+function _generate_filename_raw(s::AbstractScribe, ::Type{DataTable})
     filename = string(s.name, "_", randstring(FILENAME_RANDSTRING_LENGTH), ".feather")
 end
 
@@ -209,7 +209,7 @@ end
 
 
 _save_eval(filename::String, y) = serialize(filename, y)
-_save_eval(filename::String, y::DataFrame) = featherWrite(filename, y)
+_save_eval(filename::String, y::DataTable) = featherWrite(filename, y)
 
 function _save_eval!(s::NonVolatileScribe, dict::Dict, key_args, y)
     filename = _generate_filename(s, typeof(y))
