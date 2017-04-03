@@ -1,4 +1,4 @@
-
+abstract type AbstractScribe end
 
 """
     clearScribeBox!()
@@ -52,7 +52,7 @@ as well as some methods for easily converting into `NonVolatileScribe`.
 
 Note that all scribe objects identify functions purely by their names.
 """
-type VolatileScribe <: AbstractScribe
+struct VolatileScribe <: AbstractScribe
     f::Function
     vals::Dict
     name::Symbol
@@ -88,7 +88,7 @@ function evaluations from there and merge those with any that it has already eva
 in the course of the program, which will also be stored to files in `dir`.  If `dir` does
 not exist, it will be created along with any evaluations that the scribe holds.
 """
-type NonVolatileScribe <: AbstractScribe
+struct NonVolatileScribe <: AbstractScribe
     f::Function
     vals::Dict
     name::Symbol

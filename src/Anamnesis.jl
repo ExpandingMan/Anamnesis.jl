@@ -15,15 +15,13 @@ const FILENAME_RANDSTRING_LENGTH = 12
 ARGHASH_FLOAT_DIGITS = 12
 
 
-abstract AbstractScribe
-
-# these are scribes that are getting stored for macros
-ScribeBox = Dict{Symbol,AbstractScribe}()
-
-
-include("filesystem.jl")
 include("scribe.jl")
+include("filesystem.jl")
 include("anamnesis.jl")
 
+
+function __init__()
+    global ScribeBox = Dict{Symbol,AbstractScribe}()
+end
 
 end
