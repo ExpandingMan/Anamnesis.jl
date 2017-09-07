@@ -2,7 +2,7 @@ __precompile__(true)
 
 module Anamnesis
 using DataUtils
-using DataTables
+using DataFrames
 
 # TODO write forget macros
 # TODO implement size limits for hashing
