@@ -4,34 +4,35 @@
 The metadata dictionary has keys which are Vector{Any}s with the function name
 followed by the hashed arguments.
 =================================================================================#
-metadataFileName(dir::String, name::Symbol) = joinpath(dir,string(name,"_",METADATA_FILENAME))
-loadMetadata_raw(dir::String, name::Symbol) = deserialize(metadataFileName(dir, name))
+metadatafilename(dir::String, name::Symbol) = joinpath(dir,string(name,"_",METADATA_FILENAME))
+loadmetadata_raw(dir::String, name::Symbol) = deserialize(open(metadatafilename(dir, name), "r"))
 
 
 """
-    loadMetadata(dir)
+    loadmetadata(dir)
 
 Load a metadata dictionary (the kind used by scribes) found in the directory `dir`.
 If a file doesn't exist in the directory with the standard metadat filename 
 (`Anamnesis.METADATE_FILENAME`), an empty `Dict` will be returned instead.
 """
-function loadMetadata(dir::String, name::Symbol)
-    filename = metadataFileName(dir, name)
+function loadmetadata(dir::String, name::Symbol)
+    filename = metadatafilename(dir, name)
     if isfile(filename)
-        return loadMetadata_raw(dir, name)
+        return loadmetadata_raw(dir, name)
     end
     Dict()  # if file doesn't exist, return empty Dict
 end
 
 
 """
-    saveMetadata(dir, name, meta)
+    savemetadata(dir, name, meta)
 
 Saves the `Dict` `meta` to the directory `dir` in a file with the standard metadata file name
 (`Anamnesis.METADATA_FILENAME`) for the function named `name`.
 """
-function saveMetadata(dir::String, name::Symbol, meta::Dict)
-    serialize(metadataFileName(dir, name), meta)
+function savemetadata(dir::String, name::Symbol, meta::Dict)
+    # TODO consider changing serialization methods
+    serialize(open(metadatafilename(dir, name), "w+"), meta)
 end
 
 
@@ -56,13 +57,7 @@ end
 
 Loads a file using the appropriate deserialization method for the file extension.
 """
-function loadfile(filename::String)
-    ext = convert(String, split(filename, '.')[end])
-    if ext == "feather"
-        return featherRead(filename)
-    end
-    deserialize(filename)
-end
+loadfile(filename::String) = deserialize(open(filename, "r"))
 
 
 

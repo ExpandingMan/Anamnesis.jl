@@ -1,25 +1,25 @@
 abstract type AbstractScribe end
 
 """
-    clearScribeBox!()
+    clearscribebox!()
 
 Resets the `ScribeBox`, which holds references to scribes created with `@scribe` or 
 `@anamnesis`.
 """
-function clearScribeBox!()
+function clearscribebox!()
     global ScribeBox = Dict{Symbol,AbstractScribe}()
 end
 
 
 
 """
-    mergeValueDicts!(into, from)
+    mergevaluedicts!(into, from)
 
 Merges dicts of the type that are stored in the `vals` field of `AbstractScribe` objects,
 storing the result in `into`.  If one of the inner dicts have keys that are present in
 both `into` and `from`, the value from `from` takes precedence.
 """
-function mergeValueDicts!(into::Dict, from::Dict)
+function mergevaluedicts!(into::Dict, from::Dict)
     for (k, v) ∈ from
         if k ∈ keys(into)
             # keeps values from v where there are conflicts
@@ -96,7 +96,7 @@ struct NonVolatileScribe <: AbstractScribe
 
     function NonVolatileScribe(f::Function, name::Symbol, dir::String)
         !isdir(dir) && mkdir(dir)
-        new(f, loadMetadata(dir, name), name, dir)
+        new(f, loadmetadata(dir, name), name, dir)
     end
 end
 export NonVolatileScribe
@@ -115,7 +115,7 @@ function NonVolatileScribe(s::VolatileScribe, dir::String)
     o = NonVolatileScribe(s.f, s.name, dir)
     o.vals = copy(s.vals)
     meta = loadMetadata(o)
-    mergeValueDicts!(o.vals, meta)
+    mergevaluedicts!(o.vals, meta)
     # now we need to make files for everything that's missing
     for (k, v) ∈ o.vals
         if (:val ∈ keys(v)) && (:file ∉ keys(v))
@@ -136,7 +136,7 @@ function NonVolatileScribe(s::NonVolatileScribe, dir::String)
     old_dir = s.dir
     s.dir = dir
     mkdir(s.dir)
-    saveMetadata(s.dir, metadata(s))
+    savemetadata(s.dir, metadata(s))
     for (k, v) ∈ s.vals
         # if the file already existed, just copy it without deserializing
         if (:file ∈ keys(v))
@@ -158,13 +158,13 @@ metadataFileName(s::NonVolatileScribe) = metadataFileName(s.dir, s.name)
 
 
 """
-    saveMetadata(scr)
+    savemetadata(scr)
 
 Save metadata for the `NonVolatileScribe` `scr`.
 """
-function saveMetadata(s::NonVolatileScribe)
+function savemetadata(s::NonVolatileScribe)
     meta = metadata(s)
-    saveMetadata(s.dir, s.name, meta)
+    savemetadata(s.dir, s.name, meta)
 end
 
 
@@ -178,9 +178,6 @@ loadMetadata(s::NonVolatileScribe) = loadMetadata(s.dir, s.name)
 
 function _generate_filename_raw{T}(s::AbstractScribe, ::Type{T})
     filename = string(s.name, "_", randstring(FILENAME_RANDSTRING_LENGTH), ".jbin")
-end
-function _generate_filename_raw(s::AbstractScribe, ::Type{DataFrame})
-    filename = string(s.name, "_", randstring(FILENAME_RANDSTRING_LENGTH), ".feather")
 end
 
 # this is a bad way of doing this but shouldn't matter
@@ -208,15 +205,14 @@ function (s::VolatileScribe)(args...; kwargs...)
 end
 
 
-_save_eval(filename::String, y) = serialize(filename, y)
-_save_eval(filename::String, y::DataFrame) = featherWrite(filename, y)
+_save_eval(filename::String, y) = serialize(open(filename, "w+"), y)
 
 function _save_eval!(s::NonVolatileScribe, dict::Dict, key_args, y)
     filename = _generate_filename(s, typeof(y))
     dict[:val] = y
     dict[:file] = filename
     s.vals[key_args] = dict
-    saveMetadata(s)  # TODO clean this shit up!  shouldn't run all the time
+    savemetadata(s)  # TODO clean this shit up!  shouldn't run all the time
     _save_eval(joinpath(s.dir, filename), y)
 end
 
@@ -259,7 +255,7 @@ Note that this will *not* throw an error if the entry for the arguments provided
 exist.
 """
 function forget!(s::AbstractScribe, args...)
-    key_args = hashArgs(args) 
+    key_args = hashArgs(args)
     y = get(s.vals[key_args], :val, nothing)
     delete!(s.vals, key_args)
     y
@@ -280,7 +276,7 @@ export forget!
     purge(dir)
 
 Delete a directory and its contents.  If an `AbstractScribe` argument is provided,
-the directory will be deleted, and a non-volatile scribe object will be returned.  
+the directory will be deleted, and a non-volatile scribe object will be returned.
 """
 purge(dir::String) = rm(dir, force=true, recursive=true)
 function purge(scr::NonVolatileScribe)
