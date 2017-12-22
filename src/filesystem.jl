@@ -5,14 +5,14 @@ The metadata dictionary has keys which are Vector{Any}s with the function name
 followed by the hashed arguments.
 =================================================================================#
 metadatafilename(dir::String, name::Symbol) = joinpath(dir,string(name,"_",METADATA_FILENAME))
-loadmetadata_raw(dir::String, name::Symbol) = deserialize(open(metadatafilename(dir, name), "r"))
+loadmetadata_raw(dir::String, name::Symbol) = load(metadatafilename(dir, name))
 
 
 """
     loadmetadata(dir)
 
 Load a metadata dictionary (the kind used by scribes) found in the directory `dir`.
-If a file doesn't exist in the directory with the standard metadat filename 
+If a file doesn't exist in the directory with the standard metadat filename
 (`Anamnesis.METADATE_FILENAME`), an empty `Dict` will be returned instead.
 """
 function loadmetadata(dir::String, name::Symbol)

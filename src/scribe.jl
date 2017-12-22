@@ -391,17 +391,15 @@ macro scribe(f)
     esc(o)
 end
 
-macro scribe(dir, f)
+macro scribe(dir::String, f)
     fname = Expr(:quote, f)
     if f ∉ keys(ScribeBox)
         o = quote
-            @assert typeof($dir) <: AbstractString "Directory must be a string."
             Anamnesis.ScribeBox[$fname] = Anamnesis.scribe($f, $fname, $dir)
         end
     else
         # check if existing needs to be promoted
         o = quote
-            @assert typeof($dir) <: AbstractString "Directory must be a string."
             if !isa(Anamnesis.ScribeBox[$fname], NonVolatileScribe)
                 Anamnesis.ScribeBox[$fname] = 
                     NonVolatileScribe(Anamnesis.ScribeBox[$fname], $dir)
