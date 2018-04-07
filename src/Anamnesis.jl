@@ -18,7 +18,7 @@ const ARGHASH_FLOAT_DIGITS = 12
 
 include("scribe.jl")
 include("filesystem.jl")
-include("anamnesis.jl")
+include("anamnesismacro.jl")
 
 
 function __init__()
