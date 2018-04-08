@@ -1,31 +1,28 @@
 using Anamnesis
 using BenchmarkTools
+using Random, LinearAlgebra
 
-function f(x)
-    println("f being called!")
-    x^2 + 1
-end
+dtype = ComplexF64
 
-function g(x; y) 
-    println("g being called!")
-    x^2 + y
-end
-
-@anamnesis function h(x::Int; y::Float64=1)
-    println("h being called!")
-    x^2 + y
-end
-
-@anamnesis begin
-    a = 1
-    b = 2
-    z(v) = sum(v)
-    f(a)
-    f(b)
-    println("!!  ", f(a) + f(b))
-    println("!!  ", z([1,2,3]))
-    g(a, y=b)
-    g(a, y=b)
-end f g
+callcount = [0, 0]
+f = (x::AbstractVector{<:Number}) -> (callcount[1] += 1; x⋅x + 1)
+sf = Scribe(f, IdDict())
 
 
+x = rand(dtype, rand(64:256))
+ξ = rand(dtype)
+y = randstring(rand(0:31))
+
+sf(x) == f(x)
+
+# sg(ξ, y=y) == g(ξ, y=y)
+# sf(x) == f(x)
+# sg(ξ, y=y) == g(ξ, y=y)
+
+ex = @macroexpand @anamnesis begin
+        f2([1,2]) + h2(3)
+        z = f2([1,2]) + h2(3)
+        string(g2(1, y="fire"), g2(2, y="walk"), h2("with"), h2("me"))
+        A = [h2("with") g2(1,y="fire")
+             g2(2,y="walk") h2("me")]
+end f2 g2

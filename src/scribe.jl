@@ -5,17 +5,12 @@ abstract type ReturnSpecifier end
 struct Unseen <: ReturnSpecifier end
 
 
-struct VolatileScribe{F<:Function,K,V} <: AbstractScribe{F}
+struct Scribe{F<:Function,D<:AbstractDict} <: AbstractScribe{F}
     f::F
-    cache::Dict{K,V}
+    cache::D
 end
 
-VolatileScribe(f::Function) = VolatileScribe(f, Dict{Any,Any}())
-VolatileScribe(f::Function, ::Type{K}, ::Type{V}) where {K,V} = VolatileScribe(f, Dict{K,V}())
-
-# temporary before we write other scribe types
-Scribe(f::Function) = VolatileScribe(f)
-Scribe(f::Function, ::Type{K}, ::Type{V}) where {K,V} = VolatileScribe(f, K, V)
+Scribe(f::Function) = Scribe(f, IdDict{Any,Any}())
 
 # functions which can be overloaded by user for better type stability
 returntype(f::Function, argtypes) = return_type(f, argtypes)
@@ -36,6 +31,6 @@ scry(s::AbstractScribe, ret, args, kwargs) = ret::returntype(s, typeof(args), ty
 
 call(s::AbstractScribe, args...) = scry(s, s[args], args)
 
-function (s::VolatileScribe)(args...; kwargs...)
+function (s::Scribe)(args...; kwargs...)
     isempty(kwargs) ? scry(s, s[args], args) : scry(s, s[(args,kwargs)], args, kwargs)
 end

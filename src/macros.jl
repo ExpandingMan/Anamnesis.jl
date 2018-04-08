@@ -1,21 +1,17 @@
 
 
-macro localscribe(f::Symbol)
+macro localscribe(f::Symbol, dict=:(IdDict()))
     sname = scribename(f)
     esc(quote
-        if !@isdefined($sname)
-            $sname = Anamnesis.Scribe($f)
-        end
+        !@isdefined($sname) && ($sname = Anamnesis.Scribe($f, $dict))
         $sname
     end)
 end
 
-macro scribe(f::Symbol)
+macro scribe(f::Symbol, dict=:(IdDict()))
     sname = scribename(f)
     esc(quote
-        if !@isdefined($sname)
-            global $sname = Anamnesis.Scribe($f)
-        end
+        !@isdefined($sname) && (global $sname = Anamnesis.Scribe($f, $dict))
         $sname
     end)
 end
