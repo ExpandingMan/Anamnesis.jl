@@ -13,6 +13,6 @@ include("macros.jl")
 
 export VolatileScribe
 export call
-export @scribeof, @mem, @localmem, @anamnesis
+export @scribeof, @mem, @localmem, @scribe, @localscribe, @rawcall, @rawfunc, @scribeofrawfunc, @anamnesis
 
 end
