@@ -51,7 +51,7 @@ end
 
 @testset "Macros2" begin
     callcount = [0, 0]
-    @anamnesis f1(x::AbstractVector{<:Number}) = (callcount[1] += 1; x⋅x - 1)
+    @anamnesis f1(x::AbstractVector{<:Number}, y=2) = (callcount[1] += 1; x⋅x - y)
     @anamnesis g1(x::Number; y::String) = (callcount[2] += 1; string(x, y))
 
     for i ∈ 1:N_CALL_LOOPS
