@@ -61,7 +61,7 @@ end
         @test f1(x) == @rawfunc(f1)(x)
         @test f1(x) == @rawfunc(f1)(x)
         @test g1(ξ, y=y) == @rawfunc(g1)(ξ, y=y)
-        @test g1(ξ, y=y) == @rawfunc(g1)(ξ, y=y)
+        @test @inferred g1(ξ, y=y) == @rawfunc(g1)(ξ, y=y)
     end
     @test callcount[1] == 3N_CALL_LOOPS
     @test callcount[2] == 3N_CALL_LOOPS

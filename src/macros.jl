@@ -54,7 +54,8 @@ macro anamnesis(expr::Expr)
 
     esc(quote
         $(MacroTools.combinedef(rawfuncdef))
-        $scrname = Anamnesis.Scribe($rawname)
+        $scrname = Anamnesis.Scribe($rawname,
+                                    IdDict{Any, $(get(origdef, :rtype, :Any))}())
         $(MacroTools.combinedef(funcdef))
     end)
 end
