@@ -28,11 +28,10 @@ macro mem(expr::Expr)
 end
 
 
-_striparg(arg::Symbol) = arg
-_striparg(ex::Expr) = (@capture(ex, arg_::dtype_); arg)
+argname(x)::Symbol = splitarg(x)[1]
 
 function _translate_kwarg(ex::Expr)
-    arg = _striparg(ex.args[1])
+    arg = argname(ex)
     Expr(:kw, arg, arg)
 end
 
@@ -50,7 +49,7 @@ macro anamnesis(expr::Expr)
     funcdef = copy(origdef)
     kwargs = _translate_kwarg.(funcdef[:kwargs])
     funcdef[:body] = quote
-        $scrname($(funcdef[:args]...); $(kwargs...))
+        $scrname($(map(argname, funcdef[:args])...); $(kwargs...))
     end
 
     esc(quote
