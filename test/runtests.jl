@@ -1,7 +1,7 @@
 using Anamnesis
 using Test, Random, LinearAlgebra
 
-srand(999)
+Random.seed!(999)
 
 const NUMBER_TYPES = [Int, UInt, Float64, Complex{Float64}]
 
