@@ -3,7 +3,7 @@
 macro localscribe(f::Symbol, dict=:(IdDict()))
     sname = scribename(f)
     esc(quote
-        !@isdefined($sname) && ($sname = Anamnesis.Scribe($f, $dict))
+        !@isdefined($sname) && ($sname = $Anamnesis.Scribe($f, $dict))
         $sname
     end)
 end
@@ -11,7 +11,7 @@ end
 macro scribe(f::Symbol, dict=:(IdDict()))
     sname = scribename(f)
     esc(quote
-        !@isdefined($sname) && (global $sname = Anamnesis.Scribe($f, $dict))
+        !@isdefined($sname) && (global $sname = $Anamnesis.Scribe($f, $dict))
         $sname
     end)
 end
@@ -54,7 +54,7 @@ macro anamnesis(expr::Expr)
 
     esc(quote
         $(MacroTools.combinedef(rawfuncdef))
-        $scrname = Anamnesis.Scribe($rawname,
+        $scrname = $Anamnesis.Scribe($rawname,
                                     IdDict{Any, $(get(origdef, :rtype, :Any))}())
         $(MacroTools.combinedef(funcdef))
     end)
